@@ -29,7 +29,7 @@ const page = () => {
                   >
                   <span>{e.id}</span>
                   <span>{e.title}</span>
-                  <span>{e.difficulty}</span>
+                  <span className='text-2xl'>{e.difficulty}</span>
                   </Link>
                 )
               })}
