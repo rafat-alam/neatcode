@@ -8,7 +8,7 @@ const Header = () => {
   const pathname = usePathname()
 
   const links = [
-    { href: '/', label: 'Home' },
+    { href: '/', label: 'NEATCODE' },
     { href: '/problems', label: 'Problems' },
     { href: '/contest', label: 'Contest' },
     { href: '/compiler', label: 'Compiler' },
@@ -20,14 +20,15 @@ const Header = () => {
       <nav className="h-16 flex gap-10 p-4 bg-gray-100">
         {links.map(link => {
           const isActive = pathname === link.href
+          const isneat = link.label === 'NEATCODE'
           return (
             <Link
               key={link.href}
               href={link.href}
               className={`px-3 py-2 font-semibold rounded flex items-center justify-center ${
-                isActive
+                isActive && !isneat
                   ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-200'
+                  : (isneat ? 'text-2xl px-5' :'text-gray-700 hover:bg-gray-200')
               }`}
             >
               {link.label}

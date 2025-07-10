@@ -1,15 +1,16 @@
-'use client';
-import { useParams } from 'next/navigation';
+const Page = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
 
-const page = () => {
-  const params = useParams();
-  const id = params.id;
+  // const res = await fetch(`https://api.example.com/problems/${id}`, {
+  //   cache: 'no-store'
+  // });
+  // const data = await res.json();
 
   return (
-    <>
-      <div>User ID: {id}</div>
-    </>
-  )
-}
+    <div>
+      <h1 className="text-2xl">Problem ID: {id}</h1>
+    </div>
+  );
+};
 
-export default page
+export default Page;
