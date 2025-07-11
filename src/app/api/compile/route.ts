@@ -3,7 +3,8 @@ import { writeFile } from 'fs/promises';
 import { spawn } from 'child_process';
 import path from 'path';
 import { performance } from 'perf_hooks';
-import { error } from 'console';
+import { unlink } from 'fs/promises';
+import { randomUUID } from 'crypto';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -13,10 +14,11 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ error: 'Unsupported language' }, { status: 400 });
   }
 
+  const uniqueId = randomUUID();
+  const cppFilePath = path.join(process.cwd(), `temp_${uniqueId}.cpp`);
+  const exeFilePath = path.join(process.cwd(), `temp_${uniqueId}.exe`);
+  
   try {
-    const cppFilePath = path.join(process.cwd(), 'temp.cpp');
-    const exeFilePath = path.join(process.cwd(), 'temp.exe');
-
     await writeFile(cppFilePath, code);
 
     // Compile the code
@@ -60,5 +62,10 @@ export const POST = async (req: Request) => {
 
   } catch (err: any) {
     return NextResponse.json({ error: err.toString()});
+  } finally {
+    await Promise.all([
+      unlink(cppFilePath).catch(() => {}),
+      unlink(exeFilePath).catch(() => {})
+    ]);
   }
 };
