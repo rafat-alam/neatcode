@@ -1,65 +1,7 @@
-ffffffffffff
+#include <bits/stdc++.h>
+using namespace std;
 
-
-
-
-
-
-fffffffffff
-
-ff
-f
-f
-f
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int main() {
+    cout << "A";
+    return 0;
+}

@@ -133,9 +133,15 @@ const page = () => {
                       });
                       if(res.data.error) {
                         setoutput(res.data.error);
+                        toast.error("Compilation Error!")
                         setstats("Time Taken : N/A, Memory Used : N/A")
                       } else {
                         setoutput(res.data.output);
+                        if(eoutput === output) {
+                          toast.success("Output Matched!")
+                        } else {
+                          toast.warning("Outputs didn't Matched!")
+                        }
                         setstats(`Time Taken : ${(res.data.runtime / 1000).toFixed(3)}s, Memory Used : N/A`)
                       }
                     } catch (err: any) {
