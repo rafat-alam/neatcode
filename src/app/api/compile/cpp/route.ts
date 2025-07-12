@@ -8,12 +8,7 @@ import { randomUUID } from 'crypto';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
-  const { code, lang, input } = body;
-
-  if (lang !== 'cpp') {
-    return NextResponse.json({ error: 'Unsupported language' }, { status: 400 });
-  }
-
+  const { code, input } = body;
   const uniqueId = randomUUID();
   const cppFilePath = path.join(process.cwd(), `temp_${uniqueId}.cpp`);
   const exeFilePath = path.join(process.cwd(), `temp_${uniqueId}.exe`);

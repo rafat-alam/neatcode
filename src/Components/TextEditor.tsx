@@ -5,24 +5,27 @@ interface TextEditorProps {
   value: string;
   onChange: (val: string) => void;
   editable: boolean;
+  theme: string
+  tabsize: number
+  textsize: number
 }
 
-const TextEditor = ({ value, onChange, editable }: TextEditorProps) => {
+const TextEditor = ({ value, onChange, editable, theme, tabsize, textsize }: TextEditorProps) => {
   return (
     <Editor
-      className='border-2'
       height="100%"
+      width="100%"
       defaultLanguage="plaintext"
-      theme="github-light"
+      theme={theme}
       value={value}
       onChange={(val) => onChange(val || '')}
       options={{
         readOnly: !editable,
-        wordWrap: 'off',
-        fontSize: 18,
+        wordWrap: 'on',
+        fontSize: textsize,
         minimap: { enabled: false },
-        lineNumbers: 'off',
-        tabSize: 4,
+        lineNumbers: 'on',
+        tabSize: tabsize,
         automaticLayout: true,
         padding: { top: 10 },
         scrollBeyondLastLine: false,

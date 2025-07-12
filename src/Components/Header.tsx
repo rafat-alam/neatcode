@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="h-16 flex gap-10 p-4 bg-gray-100">
+      <nav className="h-16 flex gap-10 p-4 bg-gray-200">
         {links.map(link => {
           const isActive = pathname === link.href
           const isneat = link.label === 'NEATCODE'
