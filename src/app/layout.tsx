@@ -25,6 +25,7 @@ export default function RootLayout({
             pauseOnHover
             theme="colored"
           />
+          
           <Header />
           {children}
         </div>

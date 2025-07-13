@@ -1,41 +1,33 @@
-'use client'
-
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React from 'react'
+import Link from 'next/link'
+import HeaderNav from './HeaderNav'
+import SignoutButton from './SignoutButton'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authoptions";
+import SignInButton from './SigninButton';
+import RegisterButton from './RegisterButton';
 
-const Header = () => {
-  const pathname = usePathname()
-
-  const links = [
-    { href: '/', label: 'NEATCODE' },
-    { href: '/problems', label: 'Problems' },
-    { href: '/contest', label: 'Contest' },
-    { href: '/compiler', label: 'Compiler' },
-    { href: '/messages', label: 'Messages' },
-  ]
+const Header = async () => {
+  const session = await getServerSession(authOptions);
 
   return (
     <>
-      <nav className="h-16 flex gap-10 p-4 bg-gray-200">
-        {links.map(link => {
-          const isActive = pathname === link.href
-          const isneat = link.label === 'NEATCODE'
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-2 font-semibold rounded flex items-center justify-center ${
-                isActive && !isneat
-                  ? 'bg-blue-600 text-white'
-                  : (isneat ? 'text-2xl px-5' :'text-gray-700 hover:bg-gray-200')
-              }`}
-            >
-              {link.label}
-            </Link>
-          )
-        })}
-        <input className='bg-white'/>
+      <nav className="h-16 flex items-center p-4 bg-gray-200 justify-between">
+        <HeaderNav />
+        <div className='flex gap-10 items-center mx-5'>
+          {!session && (
+            <>
+              <SignInButton />
+              <RegisterButton />
+            </>
+          )}
+          {session && (
+            <>
+              <div>{session.user?.username}</div>
+              <SignoutButton />
+            </>
+          )}
+        </div>
       </nav>
     </>
   )

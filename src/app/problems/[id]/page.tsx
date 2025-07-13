@@ -4,6 +4,8 @@ import Split from '@uiw/react-split';
 import { IoSettingsSharp } from 'react-icons/io5';
 import CodeEditor from '@/Components/CodeEditor';
 import SettingsCompiler from '@/Components/SettingsCompiler';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Page = ({ params }: { params: { id: string } }) => {
   const content = `
@@ -103,6 +105,11 @@ Number 3: 3 (bit 0 + bit 1)
   const [textsize, settextsize] = useState(18)
   const [lang, setlang] = useState("cpp")
   const [setting, setsetting] = useState(false)
+  const [clicked, setclicked] = useState(false)
+  const [output, setoutput] = useState("")
+  const [input, setinput] = useState("")
+  const [stats, setstats] = useState("");
+  const [eoutput, seteoutput] = useState("")
   // const res = await fetch(`https://api.example.com/problems/${id}`, {
   //   cache: 'no-store'
   // });
@@ -119,7 +126,111 @@ Number 3: 3 (bit 0 + bit 1)
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
           <div className="w-1/2 min-w-1/4 bg-grey-150 flex flex-col h-full">
-            <div className='h-12 px-3 flex justify-end items-center'>
+            <div className='h-16 px-3 flex items-center justify-between'>
+              <div className="flex items-center px-2">
+                <select
+                  disabled={clicked}
+                  id="language"
+                  name="language"
+                  className="border border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={lang}
+                  onChange={(e) => {
+                    setlang(e.target.value)
+                  }}
+                >
+                  <option value="text" disabled>Select Language</option>
+                  <option value="python">Python</option>
+                  <option value="cpp">C++</option>
+                  <option value="java">Java</option>
+                </select>
+
+                <button
+                  disabled={clicked}
+                  className={`mx-5 px-7 py-1.5 border-2 ${clicked ? `text-blue-400 border-blue-400` : `text-blue-600 border-blue-600 transition`} rounded transition`}
+                  onClick={async () => {
+                    if(lang != 'text' && !clicked) {
+                      setclicked(true);
+                      setoutput("")
+                      try {
+                        const res = await axios.post(`/api/compile/${lang.toString()}`, {
+                          code: code,
+                          input: input
+                        });
+                        if(res.data.error) {
+                          setoutput(res.data.error);
+                          toast.error("Compilation Error!")
+                          setstats("Time Taken : N/A, Memory Used : N/A")
+                        } else {
+                          setoutput(res.data.output);
+                          if(eoutput === res.data.output) {
+                            toast.success("Output Matched!")
+                          } else {
+                            toast.warning("Outputs didn't Matched!")
+                          }
+                          setstats(`Time Taken : ${(res.data.runtime / 1000).toFixed(3)}s, Memory Used : N/A`)
+                        }
+                      } catch (err: any) {
+                        
+                      } finally {
+                        setTimeout(() => {
+                          setclicked(false);
+                        }, 500);
+                      }
+                    } else {
+                      setclicked(true);
+                      toast.error("Select Language")
+                      setTimeout(() => {
+                        setclicked(false);
+                      }, 500);
+                    }
+                  }}
+                >
+                  Run
+                </button>
+                <button
+                  disabled={clicked}
+                  className={`px-7 py-2 text-white ${clicked ? `bg-blue-400 transition` : `bg-blue-600 transition`} rounded transition`}
+                  onClick={async () => {
+                    if(lang != 'text' && !clicked) {
+                      setclicked(true);
+                      setoutput("")
+                      try {
+                        const res = await axios.post(`/api/compile/${lang.toString()}`, {
+                          code: code,
+                          input: input
+                        });
+                        if(res.data.error) {
+                          setoutput(res.data.error);
+                          toast.error("Compilation Error!")
+                          setstats("Time Taken : N/A, Memory Used : N/A")
+                        } else {
+                          setoutput(res.data.output);
+                          if(eoutput === res.data.output) {
+                            toast.success("Output Matched!")
+                          } else {
+                            toast.warning("Outputs didn't Matched!")
+                          }
+                          setstats(`Time Taken : ${(res.data.runtime / 1000).toFixed(3)}s, Memory Used : N/A`)
+                        }
+                      } catch (err: any) {
+                        
+                      } finally {
+                        setTimeout(() => {
+                          setclicked(false);
+                        }, 500);
+                      }
+                    } else {
+                      setclicked(true);
+                      toast.error("Select Language")
+                      setTimeout(() => {
+                        setclicked(false);
+                      }, 500);
+                    }
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
               <button
                 onClick={() => setsetting(true)}
                 className="text-black hover:text-gray-300"
