@@ -2,9 +2,8 @@ import React from 'react'
 import res from '../../data.json' assert { type: 'json' };
 import Link from 'next/link';
 
-const page = () => {
+const ProblemList = () => {
   const data = res.questions
-  console.log(data[0].id);
   return (
     <>
       <div className='h-[calc(100vh-4rem)] flex-1 flex'>
@@ -46,4 +45,4 @@ const page = () => {
   )
 }
 
-export default page
+export default ProblemList

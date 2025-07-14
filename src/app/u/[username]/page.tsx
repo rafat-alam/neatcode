@@ -1,14 +1,15 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authoptions';
-import { getServerSession } from 'next-auth';
+import { authOptions } from "@/app/api/auth/[...nextauth]/authoptions";
+import { getServerSession } from "next-auth";
 
-type Props = {
-  params: { username: string };
-};
+const Page = async ({
+  params,
+}: {
+  params: Promise<{ username: string }>
+}) => {
+  const { username } = await params;
+  console.log(username)
 
-export default async function UserProfile(props: Props) {
   const session = await getServerSession(authOptions);
-
-  const { username } = await props.params;
 
   if (session && session.user.username === username) {
     return (
@@ -25,4 +26,7 @@ export default async function UserProfile(props: Props) {
       </div>
     );
   }
-}
+
+};
+
+export default Page;

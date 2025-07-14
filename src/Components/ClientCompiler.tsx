@@ -1,7 +1,7 @@
 'use client'
 import CodeEditor from '@/Components/CodeEditor'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { IoSettingsSharp } from "react-icons/io5";
 import SettingsCompiler from '@/Components/SettingsCompiler'
@@ -91,8 +91,8 @@ const ClientCompiler = () => {
                         toast.error("Not Logedin.");
                         setstats("Time Taken : N/A, Memory Used : N/A")
                       }
-                    } catch (err: any) {
-                      
+                    } catch (err) {
+                      console.log(err);
                     } finally {
                       setTimeout(() => {
                         setclicked(false);

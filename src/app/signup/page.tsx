@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
 export default function SignupPage() {
@@ -26,8 +26,9 @@ export default function SignupPage() {
       toast.success('OTP sent to your email');
       settoken(res.data.token);
       setStep('verify');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Signup failed');
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || 'Signup failed');
     }
   };
 
@@ -41,8 +42,9 @@ export default function SignupPage() {
 
       toast.success('Account verified! You can now log in.');
       router.push('/login');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'OTP verification failed');
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || 'OTP verification failed');
     }
   };
 

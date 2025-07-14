@@ -1,7 +1,18 @@
 import React, { useRef } from 'react'
 import { IoClose } from 'react-icons/io5';
 
-const SettingsCompiler = ({open, close, theme, settheme, tabsize, settabsize, textsize, settextsize}: { open: boolean; close: Function; theme: string; settheme: Function; tabsize: number; settabsize: Function; textsize:number; settextsize: Function; }) => {
+interface SettingsCompilerProps {
+  open: boolean;
+  close: () => void;
+  theme: string;
+  settheme: React.Dispatch<React.SetStateAction<string>>;
+  tabsize: number;
+  settabsize: React.Dispatch<React.SetStateAction<number>>;
+  textsize: number;
+  settextsize: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const SettingsCompiler: React.FC<SettingsCompilerProps> = ({ open, close, theme, settheme, tabsize, settabsize, textsize, settextsize }) => {
 
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +58,7 @@ const SettingsCompiler = ({open, close, theme, settheme, tabsize, settabsize, te
                 className="border text-sm border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={tabsize}
                 onChange={(e) => {
-                  settabsize(e.target.value)
+                  settabsize(Number(e.target.value))
                 }}
               >
                 <option value={2}>2</option>
@@ -63,7 +74,7 @@ const SettingsCompiler = ({open, close, theme, settheme, tabsize, settabsize, te
                 className="border text-sm border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={textsize}
                 onChange={(e) => {
-                  settextsize(e.target.value)
+                  settextsize(Number(e.target.value))
                 }}
               >
                 <option value={14}>14</option>

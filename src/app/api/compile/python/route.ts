@@ -44,8 +44,8 @@ export const POST = async (req: Request) => {
       memory: memoryUsedKb
     });
 
-  } catch (err: any) {
-    return NextResponse.json({ error: err.toString() });
+  } catch (err) {
+    return NextResponse.json({ error: err });
   } finally {
     await unlink(filePath).catch(() => {});
   }

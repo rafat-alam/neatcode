@@ -3,13 +3,27 @@ import User from '@/models/userModel';
 import jwt from 'jsonwebtoken';
 import { connect } from '@/dbConfig/dbConfig';
 
+interface DecodedToken {
+  email: string;
+  username: string;
+  password: string;
+  otp: string;
+  otpExpiry: number;
+}
+
 export async function POST(req: NextRequest) {
   try {
     await connect();
     const { token, otp } = await req.json();
 
     const secret = process.env.NEXTAUTH_SECRET!;
-    const decoded = jwt.verify(token, secret) as any;
+    let decoded: DecodedToken;
+
+    try {
+      decoded = jwt.verify(token, secret) as DecodedToken;
+    } catch (err) {
+      return NextResponse.json({ message: `Invalid or expired token ${err}` }, { status: 400 });
+    }
 
     if (decoded.otp !== otp) {
       return NextResponse.json({ message: 'Invalid OTP' }, { status: 400 });
@@ -36,7 +50,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ message: 'User verified and created successfully' });
-  } catch(e: any) {
-    return NextResponse.json({ message: 'Verification failed' }, { status: 500 });
+  } catch(e) {
+    return NextResponse.json({ message: `Verification failed ${e}` }, { status: 500 });
   }
 }

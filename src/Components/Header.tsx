@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import HeaderNav from './HeaderNav'
 import SignoutButton from './SignoutButton'
 import { getServerSession } from "next-auth";
