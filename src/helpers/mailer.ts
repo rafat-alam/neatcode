@@ -1,55 +1,19 @@
-import User from "@/models/userModel";
-import bcrypt from "bcryptjs";
-const nodemailer = require("nodemailer");
+import nodemailer from 'nodemailer';
 
-export const sendEmail = async ({email, emailType, userId}: any) => {
-  try {
+const transporter = nodemailer.createTransport({
+  host: 'sandbox.smtp.mailtrap.io',
+  port: 587,
+  auth: {
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS,
+  },
+});
 
-    const hashedToken = await bcrypt.hash(userId.toString(), 10)
-
-    if(emailType === "VERIFY") {
-      await User.findByIdAndUpdate(userId, {
-        $set: {
-          verifyToken: hashedToken,
-          verifyTokenExpiry: Date.now() + 3600000,
-        }
-      })
-    } else if(emailType === "RESET") {
-      await User.findByIdAndUpdate(userId, {
-        $set: {
-          forgotPasswordToken: hashedToken,
-          forgotPasswordTokenExpiry: Date.now() + 3600000,
-        }
-      })
-    }
-
-    var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
-      auth: {
-        user: "0543b7c0050acf",
-        pass: "bf307a78fcdac1"
-      }
-    });
-
-    const mailOptions = {
-      from: '"Maddison Foo Koch" <maddison53@ethereal.email>',
-      to: email,
-      subject: emailType,
-      text: "Hello world?",
-      html: `<p>
-        Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> 
-        to ${emailType === "VERIFY" ? "verify your email" : "reset your password"} 
-        or copy and paste the link below in your browser.<br>
-        ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
-      </p>`,
-    }
-
-    const mailResponse = await transport.sendMail(mailOptions)
-
-    return mailResponse
-
-  } catch(e: any) {
-    throw new Error(e.message)
-  }
-}
+export const sendEmail = async (to: string, subject: string, html: string) => {
+  await transporter.sendMail({
+    from: '"NeatCode OTP" <noreply@neatcode.com>',
+    to,
+    subject,
+    html,
+  });
+};
