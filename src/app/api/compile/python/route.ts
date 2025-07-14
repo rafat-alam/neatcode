@@ -17,7 +17,7 @@ export const POST = async (req: Request) => {
 
     const startTime = performance.now();
 
-    const run = spawn('python', [filePath]); // use 'python3' if required
+    const run = spawn('python3', [filePath]); // use 'python3' if required
 
     if (input) run.stdin.write(input);
     run.stdin.end();
