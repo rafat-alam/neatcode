@@ -3,10 +3,9 @@ import User from '@/models/userModel';
 import jwt from 'jsonwebtoken';
 import { connect } from '@/dbConfig/dbConfig';
 
-connect();
-
 export async function POST(req: NextRequest) {
   try {
+    await connect();
     const { token, otp } = await req.json();
 
     const secret = process.env.NEXTAUTH_SECRET!;
