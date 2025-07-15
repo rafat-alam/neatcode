@@ -18,15 +18,14 @@ function formatTime(ms: number): string {
 }
 
 export async function POST(req: NextRequest) {
-  const { token } = await req.json();
-
-  const secret = process.env.NEXTAUTH_SECRET!;
   let decoded: DecodedToken;
-
+  
   try {
+    const { token } = await req.json();
+    const secret = process.env.NEXTAUTH_SECRET!;
     decoded = jwt.verify(token, secret) as DecodedToken;
-  } catch (err) {
-    return NextResponse.json({ message: `Invalid or expired token ${err}` }, { status: 400 });
+  } catch {
+    return NextResponse.json({ message: 'Session Expired' }, { status: 400 });
   }
 
   try {
@@ -54,8 +53,7 @@ export async function POST(req: NextRequest) {
     } else {
       return NextResponse.json({ message: `Otp send recently, try after ${formatTime(decoded.otpExpiry - Date.now())} mins` }, { status: 400 });
     }
-
-  } catch(e) {
-    return NextResponse.json({ message: `OTP Resend failed ${e}` }, { status: 500 });
+  } catch {
+    return NextResponse.json({ message: 'OTP Resend failed' }, { status: 500 });
   }
 }

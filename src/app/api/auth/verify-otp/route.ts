@@ -21,8 +21,8 @@ export async function POST(req: NextRequest) {
 
     try {
       decoded = jwt.verify(token, secret) as DecodedToken;
-    } catch (err) {
-      return NextResponse.json({ message: `Invalid or expired token ${err}` }, { status: 400 });
+    } catch {
+      return NextResponse.json({ message: 'Invalid or expired token' }, { status: 400 });
     }
 
     if (decoded.otp !== otp) {
@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
       password: decoded.password
     });
 
-    return NextResponse.json({ message: 'User verified and created successfully' });
-  } catch(e) {
-    return NextResponse.json({ message: `Verification failed ${e}` }, { status: 500 });
+    return NextResponse.json({ message: 'User verified and created successfully' }, { status: 201 });
+  } catch {
+    return NextResponse.json({ message: 'Verification failed' }, { status: 500 });
   }
 }

@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest) => {
     const encryptedToken = jwt.sign(payload, secret, { expiresIn: '60m' });
 
     return NextResponse.json({ message: 'OTP Sent', token: encryptedToken }, { status: 201 });
-  } catch (e) {
-    return NextResponse.json({ message: `Something went wrong ${e}` }, { status: 500 });
+  } catch {
+    return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
   }
 };

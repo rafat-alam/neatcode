@@ -6,17 +6,18 @@ import { performance } from 'perf_hooks';
 import { randomUUID } from 'crypto';
 
 export const POST = async (req: Request) => {
-  const body = await req.json();
-  const { code, input } = body;
   const uniqueId = randomUUID();
   const className = `Main_${uniqueId.replace(/-/g, '')}`; // Java class must match file name
   const javaFilePath = path.join(process.cwd(), `${className}.java`);
   const memoryUsedKb = 'N/A'; // placeholder
 
-  // Replace class name with generated one
-  const updatedCode = code.replace(/public\s+class\s+\w+/, `public class ${className}`);
-
   try {
+    const body = await req.json();
+    const { code, input } = body;
+
+    // Replace class name with generated one
+    const updatedCode = code.replace(/public\s+class\s+\w+/, `public class ${className}`);
+    
     await writeFile(javaFilePath, updatedCode);
 
     // Compile Java
@@ -49,7 +50,7 @@ export const POST = async (req: Request) => {
     const runtimeMs = endTime - startTime;
 
     if (errorOutput) {
-      return NextResponse.json({ error: errorOutput.trim() });
+      return NextResponse.json({ error: errorOutput.trim() }, { status: 200 });
     }
 
     return NextResponse.json({
@@ -57,10 +58,10 @@ export const POST = async (req: Request) => {
       output: output.trim(),
       runtime: runtimeMs.toFixed(2),
       memory: memoryUsedKb
-    });
+    }, { status: 200 });
 
   } catch (err) {
-    return NextResponse.json({ error: err });
+    return NextResponse.json({ error: err }, {status : 200});
   } finally {
     await Promise.all([
       unlink(javaFilePath).catch(() => {}),

@@ -17,19 +17,26 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        await connect();
+        try {
+          await connect();
 
-        const user = await User.findOne({ email: credentials?.email });
-        if (!user) throw new Error("Invalid E-Mail / Password");
+          const user = await User.findOne({ email: credentials?.email });
+          if (!user) throw new Error("Invalid E-Mail / Password");
 
-        const isValid = await bcrypt.compare(credentials!.password, user.password);
-        if (!isValid) throw new Error("Invalid E-Mail / Password");
+          const isValid = await bcrypt.compare(
+            credentials!.password,
+            user.password
+          );
+          if (!isValid) throw new Error("Invalid E-Mail / Password");
 
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          username: user.username,
-        };
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            username: user.username,
+          };
+        } catch {
+          throw new Error("Something went wrong");
+        }
       },
     }),
   ],
@@ -49,7 +56,7 @@ export const authOptions: AuthOptions = {
         session.user.username = token.username as string;
       }
       return session;
-    }
+    },
   },
   pages: {
     signIn: "/login",

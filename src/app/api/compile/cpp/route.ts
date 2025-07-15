@@ -7,13 +7,13 @@ import { unlink } from 'fs/promises';
 import { randomUUID } from 'crypto';
 
 export const POST = async (req: Request) => {
-  const body = await req.json();
-  const { code, input } = body;
   const uniqueId = randomUUID();
   const cppFilePath = path.join(process.cwd(), `temp_${uniqueId}.cpp`);
   const exeFilePath = path.join(process.cwd(), `temp_${uniqueId}.exe`);
   
   try {
+    const body = await req.json();
+    const { code, input } = body;
     await writeFile(cppFilePath, code);
 
     // Compile the code
@@ -53,10 +53,10 @@ export const POST = async (req: Request) => {
       output: output.trim(),
       runtime: runtimeMs.toFixed(2),
       memory: memoryUsedKb
-    });
+    }, { status : 200});
 
   } catch (err) {
-    return NextResponse.json({ error: err});
+    return NextResponse.json({ error: err}, { status : 200 });
   } finally {
     await Promise.all([
       unlink(cppFilePath).catch(() => {}),
