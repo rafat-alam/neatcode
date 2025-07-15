@@ -48,7 +48,7 @@ export default function SignupPage() {
     }
   };
 
-  const handleResend = async (e: React.FormEvent) => {
+  const handleResend = async () => {
     try {
       const res = await axios.post('/api/auth/resend-otp', {
         token
