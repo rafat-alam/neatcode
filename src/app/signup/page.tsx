@@ -48,6 +48,19 @@ export default function SignupPage() {
     }
   };
 
+  const handleResend = async (e: React.FormEvent) => {
+    try {
+      const res = await axios.post('/api/auth/resend-otp', {
+        token
+      });
+      settoken(res.data.token);
+      toast.success('OTP Resended');
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      toast.error(error.response?.data?.message || 'OTP verification failed');
+    }
+  };
+
   return (
     <form
       onSubmit={step === 'signup' ? handleSignup : handleVerify}
@@ -99,6 +112,10 @@ export default function SignupPage() {
             required
           />
 
+          <button className="bg-green-600 text-white p-2 w-full" onClick={handleResend}>
+            Resend OTP
+          </button>
+          <br />
           <button type="submit" className="bg-blue-600 text-white p-2 w-full">
             Verify OTP
           </button>

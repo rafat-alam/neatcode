@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
       otpExpiry: Date.now() + 600000
     };
 
-    const encryptedToken = jwt.sign(payload, secret, { expiresIn: '10m' });
+    const encryptedToken = jwt.sign(payload, secret, { expiresIn: '60m' });
 
     return NextResponse.json({ message: 'OTP Sent', token: encryptedToken }, { status: 201 });
   } catch (e) {
