@@ -60,7 +60,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.username = token.username as string;
-        session.user.isEditor = token.isEditor as Boolean;
+        session.user.isEditor = token.isEditor as boolean;
       }
       return session;
     },

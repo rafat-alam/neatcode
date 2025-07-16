@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Split from '@uiw/react-split';
 import { IoSettingsSharp } from 'react-icons/io5';
 import CodeEditor from '@/Components/CodeEditor';
@@ -25,14 +25,14 @@ const QuestionPage: React.FC<Props> = ({ _id}) => {
   const [eoutput, seteoutput] = useState("")
   const [content, setcontent] = useState("")
 
-  useEffect(() => {
-    fetch_problem();
-  }, []);
-
-  const fetch_problem = async () => {
+  const fetch_problem = useCallback(async () => {
     const res = await axios.get(`/api/problems/${_id}`);
     setcontent(res.data.problem.content)
-  };
+  }, [_id]);
+
+  useEffect(() => {
+    fetch_problem();
+  }, [fetch_problem]);
 
   console.log(output);
   console.log(stats);
