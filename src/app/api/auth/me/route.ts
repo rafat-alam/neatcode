@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { connect } from '@/dbConfig/dbConfig';
-import User from '@/models/userModel';
+import { connect_auth } from '@/dbConfig/dbConfig';
+import { getUserModel } from '@/models/userModel';
 
 const secret = process.env.NEXTAUTH_SECRET;
 
 export async function GET(req: NextRequest) {
-  await connect();
+  
+  const connection =  connect_auth();
+  if(!connection) {
+    return NextResponse.json({ error: 'DB connection failed' }, { status: 404 });
+  }
+  const User = getUserModel(connection);
+
   const token = await getToken({ req, secret });
 
   if (!token || !token.id) {

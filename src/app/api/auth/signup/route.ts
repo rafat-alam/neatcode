@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import User from '@/models/userModel';
-import { connect } from '@/dbConfig/dbConfig';
+import { getUserModel } from '@/models/userModel';
+import { connect_auth } from '@/dbConfig/dbConfig';
 import jwt from 'jsonwebtoken';
 import { sendEmail } from '@/helpers/mailer';
 
 export const POST = async (req: NextRequest) => {
   try {
-    await connect();
+    const connection =  connect_auth();
+    if(!connection) {
+      return NextResponse.json({ error: 'DB connection failed' }, { status: 404 });
+    }
+    const User = getUserModel(connection);
+    
     const { email, username, password } = await req.json();
 
     const existingUserByEmail = await User.findOne({ email });

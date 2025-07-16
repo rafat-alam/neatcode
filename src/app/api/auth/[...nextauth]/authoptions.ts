@@ -1,6 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connect } from "@/dbConfig/dbConfig";
-import User from "@/models/userModel";
+import { connect_auth } from "@/dbConfig/dbConfig";
+import { getUserModel } from "@/models/userModel";
 import bcrypt from "bcryptjs";
 import { AuthOptions } from "next-auth";
 
@@ -18,7 +18,11 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         try {
-          await connect();
+          const connection =  connect_auth();
+          if(!connection) {
+            throw new Error("DB connection failed");
+          }
+          const User = getUserModel(connection);
 
           const user = await User.findOne({ email: credentials?.email });
           if (!user) throw new Error("Invalid E-Mail / Password");

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import User from '@/models/userModel';
+import { getUserModel } from '@/models/userModel';
 import jwt from 'jsonwebtoken';
-import { connect } from '@/dbConfig/dbConfig';
+import { connect_auth } from '@/dbConfig/dbConfig';
 
 interface DecodedToken {
   email: string;
@@ -13,7 +13,12 @@ interface DecodedToken {
 
 export async function POST(req: NextRequest) {
   try {
-    await connect();
+    const connection =  connect_auth();
+    if(!connection) {
+      return NextResponse.json({ error: 'DB connection failed' }, { status: 404 });
+    }
+    const User = getUserModel(connection);
+
     const { token, otp } = await req.json();
 
     const secret = process.env.NEXTAUTH_SECRET!;
