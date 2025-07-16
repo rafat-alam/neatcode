@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const session = await getServerSession(authOptions);
     if(!session) {
-      return NextResponse.json({ error: 'Plese login to Add' }, { status: 500 });
+      return NextResponse.json({ error: 'Plese login to Edit' }, { status: 500 });
     }
     if(!session.user.isEditor) {
       return NextResponse.json({ error: 'Permission denied.' }, { status: 500 });
@@ -19,27 +19,28 @@ export const POST = async (req: NextRequest) => {
     }
     const Problems = getProblemsModel(connection);
     
-    const { name, difficulty, content } = await req.json();
+    const { num, name, difficulty, content } = await req.json();
 
-    if(!name || !difficulty || !content) {
+    if(!num || !name || !difficulty || !content) {
       return NextResponse.json({ message: 'Fields missing' }, { status: 500 });
     }
-    
-    const num = await Problems.countDocuments() + 1;
 
     const existingProblemByName = await Problems.findOne({ name: name.split() });
-    if (existingProblemByName) {
-      return NextResponse.json({ message: 'Problem name already used' }, { status: 409 });
+    if (existingProblemByName && existingProblemByName._id != num) {
+      return NextResponse.json({ message: 'Problem name already used.' }, { status: 400 });
     }
-    
-    await Problems.create({
-      _id: num,
-      name: name,
-      difficulty: difficulty,
-      content: content,
-    })
 
-    return NextResponse.json({ message: 'Question added successfully' }, { status: 201 });
+    const updated = await Problems.findOneAndUpdate(
+      { _id: num },
+      { $set: { name, difficulty, content } },
+      { new: true }
+    );
+
+    if (!updated) {
+      return NextResponse.json({ message: 'Problem not found' }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: 'Problem updated successfully' }, { status: 201 });
   } catch {
     return NextResponse.json({ message: 'Something went wrong' }, { status: 500 });
   }

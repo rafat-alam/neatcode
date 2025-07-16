@@ -6,9 +6,7 @@ const Page = async ({
   params: Promise<{ id: string }>
 }) => {
   const { id } = await params;
-  console.log(id);
-
-  return <QuestionPage />;
+  return <QuestionPage _id={parseInt(id)}/>;
 };
 
 export default Page;

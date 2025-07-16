@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authoptions";
 import SignInButton from './SigninButton';
 import RegisterButton from './RegisterButton';
+import AddProblemButton from './AddProblemButton';
+import EditProblemButton from './EditProblemButton';
 
 const Header = async () => {
   const session = await getServerSession(authOptions);
@@ -22,6 +24,12 @@ const Header = async () => {
           )}
           {session && (
             <>
+              {session.user.isEditor && (
+                <>
+                  <AddProblemButton />
+                  <EditProblemButton />
+                </>
+              )}
               <div>{session.user?.username}</div>
               <SignoutButton />
             </>

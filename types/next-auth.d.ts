@@ -7,6 +7,7 @@ declare module "next-auth" {
       name?: string | null;
       email: string;
       username: string;
+      isEditor: Boolean;
     };
   }
 
@@ -15,6 +16,7 @@ declare module "next-auth" {
     name?: string | null;
     email: string;
     username: string;
+    isEditor: Boolean;
   }
 }
 
@@ -24,5 +26,6 @@ declare module "next-auth/jwt" {
     name?: string | null;
     email: string;
     username: string;
+    isEditor: Boolean;
   }
 }

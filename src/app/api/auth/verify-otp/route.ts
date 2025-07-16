@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
     await User.create({
       email: decoded.email,
       username: decoded.username,
-      password: decoded.password
+      password: decoded.password,
+      isEditor: false
     });
 
     return NextResponse.json({ message: 'User verified and created successfully' }, { status: 201 });

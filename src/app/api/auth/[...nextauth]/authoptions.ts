@@ -37,6 +37,7 @@ export const authOptions: AuthOptions = {
             id: user._id.toString(),
             email: user.email,
             username: user.username,
+            isEditor: user.isEditor
           };
         } catch {
           throw new Error("Something went wrong");
@@ -50,6 +51,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.username = user.username;
+        token.isEditor = user.isEditor;
       }
       return token;
     },
@@ -58,6 +60,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.username = token.username as string;
+        session.user.isEditor = token.isEditor as Boolean;
       }
       return session;
     },
