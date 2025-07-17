@@ -1,9 +1,18 @@
-import React from 'react'
+import Messages from '@/Components/Messages';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/authoptions';
 
-const Message = () => {
+const Page = async () => {
+  
+  const session = await getServerSession(authOptions);
+
   return (
-    <div>Message</div>
+    <>
+      <div className="h-[calc(100vh-4rem)] flex bg-gray-50">
+        <Messages username={session!.user.username} />
+      </div>
+    </>
   )
 }
 
-export default Message
+export default Page
