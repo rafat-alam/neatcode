@@ -5,7 +5,7 @@ const useSocket = (roomId: string) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io('/', {
+    const socket = io(process.env.DOMAIN, {
       path: '/api/socketio',
       transports: ['websocket', 'polling'],
     });
