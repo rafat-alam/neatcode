@@ -3,6 +3,8 @@ import type { NextApiRequest } from 'next';
 import type { NextApiResponse } from 'next';
 import type { Server as HTTPServer } from 'http';
 import type { Socket as NetSocket } from 'net';
+import { connect_room } from '@/dbConfig/dbConfig';
+import { getRoomModel } from '@/models/roomModel';
 
 type NextApiResponseWithSocket = NextApiResponse & {
   socket: NetSocket & {
@@ -21,13 +23,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
 
     res.socket.server.io = io;
 
-    io.on('connection', (socket) => {
+    io.on('connection', async (socket) => {
+      const connection = connect_room();
+      const Room = getRoomModel(connection!);
 
       socket.on('join', (roomId) => {
         socket.join(roomId);
       });
 
-      socket.on('message', ({ roomId, message }) => {
+      socket.on('message', async ({ roomId, message }) => {
+        await Room.findByIdAndUpdate(
+          roomId,
+          { $push: { messages: message } },
+          { upsert: true, new: true }
+        );
         socket.to(roomId).emit('message', { roomId, message });
       });
     });

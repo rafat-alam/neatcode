@@ -18,6 +18,8 @@ export const config = {
   matcher: ['/api/compile/:path*',
             '/messages/:path*',
             '/problems/add_p',
-            '/problems/update_p'
+            '/problems/update_p',
+            '/pages/api/:path*',
+            '/api/messages/:path*'
           ],
 };

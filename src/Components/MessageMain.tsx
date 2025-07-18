@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { Send } from 'lucide-react';
-import { rooms } from './data.json';
 import useSocket from '@/app/messages/useSocket';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 type Message = {
   sender: string;
@@ -21,15 +22,23 @@ export default function MessageMain({ name, roomid, me }: Props) {
   const socketRef = useSocket(roomid);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
+  const socket = socketRef.current;
 
   useEffect(() => {
-    const roommsglist = rooms as Record<string, Message[]>;
-    const messages = roommsglist[roomid] || [];
-    setMessages(messages);
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get(`/api/messages/fetch_room?roomId=${roomid}`);
+        const roomMessages: Message[] = res.data.room?.messages || [];
+        setMessages(roomMessages);
+      } catch {
+        toast.error('Failed to fetch messages');
+      }
+    };
+
+    if (roomid) fetchMessages();
   }, [roomid]);
 
   useEffect(() => {
-    const socket = socketRef.current;
     if (!socket) return;
 
     const handleIncoming = ({ roomId: incomingRoomId, message }: { roomId: string, message: Message }) => {
