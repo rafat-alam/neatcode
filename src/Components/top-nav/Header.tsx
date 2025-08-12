@@ -7,15 +7,17 @@ import SignInButton from './SigninButton';
 import RegisterButton from './RegisterButton';
 import AddProblemButton from './AddProblemButton';
 import EditProblemButton from './EditProblemButton';
+import DarkLightButton from './DarkLightButton';
 
 const Header = async () => {
   const session = await getServerSession(authOptions);
 
   return (
     <>
-      <nav className="h-16 flex items-center p-4 bg-gray-200 justify-between">
+      <nav className="h-16 flex items-center p-4 justify-between bg-white dark:bg-[#0c0c0c] dark:text-white">
         <HeaderNav />
         <div className='flex gap-10 items-center mx-5'>
+          <DarkLightButton />
           {!session && (
             <>
               <SignInButton />

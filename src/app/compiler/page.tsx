@@ -1,5 +1,5 @@
 'use client'
-import ClientCompiler from '@/Components/ClientCompiler';
+import ClientCompiler from '@/Components/compiler/ClientCompiler';
 
 export default function CompilerPage() {
   return (

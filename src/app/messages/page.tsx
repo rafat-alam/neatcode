@@ -1,4 +1,4 @@
-import Messages from '@/Components/Messages';
+import Messages from '@/Components/messages/Messages';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../api/auth/[...nextauth]/authoptions';
 

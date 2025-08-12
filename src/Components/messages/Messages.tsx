@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react'
 import Split from '@uiw/react-split';
-import MessagePanel from '@/Components/MessagePanel';
-import MessageMain from '@/Components/MessageMain';
+import MessagePanel from '@/Components/messages/MessagePanel';
+import MessageMain from '@/Components/messages/MessageMain';
 
 type Props = {
   username: string,

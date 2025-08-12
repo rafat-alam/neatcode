@@ -1,4 +1,4 @@
-import QuestionPage from '@/Components/QuestionPage';
+import QuestionPage from '@/Components/problems/QuestionPage';
 
 const Page = async ({
   params,

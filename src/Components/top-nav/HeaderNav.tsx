@@ -27,7 +27,7 @@ const HeaderNav = () => {
             className={`px-3 py-2 font-semibold rounded flex items-center justify-center ${
               isActive && !isneat
                 ? 'bg-blue-600 text-white'
-                : (isneat ? 'text-2xl px-5' :'text-gray-700 hover:bg-gray-200')
+                : (isneat ? 'text-2xl px-5' :'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:text-gray-700')
             }`}
           >
             {link.label}

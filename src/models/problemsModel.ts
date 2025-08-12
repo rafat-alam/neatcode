@@ -5,6 +5,14 @@ const problemsSchema = new mongoose.Schema({
   name: { type: String, unique: true },
   difficulty: { type : Number },
   content: { type: String },
+  testcases: [
+    {
+      input: { type: String, required: true },
+      output: { type: String, required: true },
+    }
+  ],
+  timelimit: { type : Number, required: true  },
+  memorylimit: { type : Number, required: true  },
 });
 
 export function getProblemsModel(connection: mongoose.Connection) {

@@ -4,15 +4,13 @@ import { IoClose } from 'react-icons/io5';
 interface SettingsCompilerProps {
   open: boolean;
   close: () => void;
-  theme: string;
-  settheme: React.Dispatch<React.SetStateAction<string>>;
   tabsize: number;
   settabsize: React.Dispatch<React.SetStateAction<number>>;
   textsize: number;
   settextsize: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SettingsCompiler: React.FC<SettingsCompilerProps> = ({ open, close, theme, settheme, tabsize, settabsize, textsize, settextsize }) => {
+const SettingsCompiler: React.FC<SettingsCompilerProps> = ({ open, close, tabsize, settabsize, textsize, settextsize }) => {
 
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -26,36 +24,20 @@ const SettingsCompiler: React.FC<SettingsCompilerProps> = ({ open, close, theme,
   return (
     <>
       <div className={`absolute z-[5000] ${!open ? 'hidden' : ''} h-screen w-screen bg-transparent flex items-center justify-center`} onClick={handleOuterClick}>
-        <div className='h-100 w-175 bg-white rounded-2xl shadow-2xl flex' ref={innerRef}>
-          <div className='h-full w-full rounded-2xl bg-gray-100'>
+        <div className='h-100 w-175 bg-black rounded-2xl shadow-2xl flex' ref={innerRef}>
+          <div className='h-full w-full text-white rounded-2xl bg-black'>
             <div className='w-full flex text-2xl items-center px-3 py-2 rounded-t-2xl border-b-2 justify-between'>
               Editor Setings
-              <button className='text-black text-4xl hover:text-gray-300'>
+              <button className='text-white text-4xl hover:text-gray-300'>
                 <IoClose onClick={() => {close()}} />
               </button>
-            </div>
-            <div className='p-5 flex items-center justify-between text-2xl w-full'>
-              Theme
-              <select
-                id="theme"
-                name="theme"
-                className="border text-sm border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                defaultValue={theme}
-                onChange={(e) => {
-                  settheme(e.target.value)
-                }}
-              >
-                <option value="vs">VS Light</option>
-                <option value="vs-dark">VS Dark</option>
-                <option value="hc-black">High Contrast Dark</option>
-              </select>
             </div>
             <div className='p-5 flex items-center justify-between text-2xl w-full'>
               Tab Size
               <select
                 id="tabsize"
                 name="tabsize"
-                className="border text-sm border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border text-sm border-white rounded px-3 py-2 bg-black text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={tabsize}
                 onChange={(e) => {
                   settabsize(Number(e.target.value))
@@ -71,7 +53,7 @@ const SettingsCompiler: React.FC<SettingsCompilerProps> = ({ open, close, theme,
               <select
                 id="fontsize"
                 name="fontsize"
-                className="border text-sm border-gray-300 rounded px-3 py-2 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border text-sm border-white rounded px-3 py-2 bg-black text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 defaultValue={textsize}
                 onChange={(e) => {
                   settextsize(Number(e.target.value))

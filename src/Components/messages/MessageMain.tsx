@@ -5,6 +5,7 @@ import { Send } from 'lucide-react';
 import useSocket from '@/app/messages/useSocket';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 type Message = {
   sender: string;
@@ -52,7 +53,7 @@ export default function MessageMain({ name, roomid, me }: Props) {
     return () => {
       socket.off('message', handleIncoming);
     };
-  }, [roomid]);
+  }, [roomid, socket]);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -80,10 +81,10 @@ export default function MessageMain({ name, roomid, me }: Props) {
     <section className="flex flex-col flex-1 h-full w-full bg-gray-50">
       {/* Chat Header */}
       <div className="flex items-center gap-4 px-6 py-4 border-b bg-white shadow-sm">
-        <img
-          src={`https://i.pravatar.cc/150?u=sufiya`}
-          className="w-10 h-10 rounded-full object-cover"
+        <Image
+          src={`https://i.pravatar.cc/150?u=$rafat`}
           alt={name}
+          className="rounded-full object-cover"
         />
         <div>
           <h3 className="font-semibold text-gray-800">{name}</h3>
